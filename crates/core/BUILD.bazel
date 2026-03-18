@@ -1,0 +1,21 @@
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
+load("//miri:defs.bzl", "rust_miri_test")
+
+exports_files(["Cargo.toml"])
+
+rust_library(
+    name = "core",
+    srcs = ["src/lib.rs"],
+    edition = "2021",
+    visibility = ["//visibility:public"],
+)
+
+rust_test(
+    name = "core_test",
+    crate = ":core",
+)
+
+rust_miri_test(
+    name = "core_miri",
+    target = ":core",
+)

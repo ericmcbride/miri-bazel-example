@@ -1,0 +1,18 @@
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "miri_bin",
+    srcs = ["miri-preview/bin/miri"],
+)
+
+filegroup(
+    name = "cargo_miri_bin",
+    srcs = ["miri-preview/bin/cargo-miri"],
+)
+
+filegroup(
+    name = "all_files",
+    srcs = glob(["**/*"]),
+)
+
+exports_files(["miri-preview/bin/miri"])

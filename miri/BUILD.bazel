@@ -1,0 +1,10 @@
+package(default_visibility = ["//visibility:public"])
+
+load("//miri:miri_sysroot.bzl", "miri_sysroot")
+
+miri_sysroot(
+    name = "miri_sysroot",
+    cargo_miri_bin = "@miri//:cargo_miri_bin",
+    miri_bin = "@miri//:miri_bin",
+    rust_src = "@miri//:rust_src",
+)

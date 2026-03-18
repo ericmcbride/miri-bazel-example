@@ -1,0 +1,2 @@
+build:nightly --@rules_rust//rust/toolchain/channel=nightly
+test:miri --config=nightly --test_tag_filters=miri 

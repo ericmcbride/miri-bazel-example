@@ -1,0 +1,41 @@
+module(
+    name = "miri_bazel_example",
+    version = "0.0.1",
+)
+
+# ──────────────────────────────────────
+# rules_rust
+# ──────────────────────────────────────
+bazel_dep(name = "rules_rust", version = "0.66.0")
+bazel_dep(name = "bazel_skylib", version = "1.7.1")
+bazel_dep(name = "platforms", version = "0.0.10")
+
+rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+
+# Pin down a nightly toolchain. You can have multiple toolchains
+# bazel test --config=nightly //... will pickup the nightly toolchain  
+rust.toolchain(
+    edition = "2021",
+    versions = ["nightly/2025-12-01", "1.88.0"],
+)
+
+use_repo(rust, "rust_toolchains")
+
+register_toolchains("@rust_toolchains//:all")
+crate = use_extension(
+    "@rules_rust//crate_universe:extension.bzl",
+    "crate",
+)
+
+crate.from_cargo(
+    name = "crates",
+    cargo_lockfile = "//:Cargo.lock",
+    manifests = ["//:Cargo.toml"],
+)
+
+use_repo(crate, "crates")
+
+miri = use_extension("//miri:extensions.bzl", "miri")
+miri.toolchain(nightly_date = "2025-12-01")
+# TODO: Update to not use cross repo aliases so its just use_repo(miri, "miri") 
+use_repo(miri, "miri", "miri_rust_src", "miri_aarch64-apple-darwin", "miri_x86_64-unknown-linux-gnu", "miri_aarch64-unknown-linux-gnu", "miri_cargo_workspace")

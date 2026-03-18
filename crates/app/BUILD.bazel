@@ -1,0 +1,19 @@
+load("@rules_rust//rust:defs.bzl", "rust_binary")
+load("//miri:defs.bzl", "rust_miri_test")
+
+rust_binary(
+    name = "app",
+    srcs = ["src/main.rs"],
+    edition = "2021",
+    deps = [
+        "//crates/core",
+        "//crates/utils",
+    ],
+)
+
+# For binaries, Miri runs the main function
+# Remove this if app doesn't have meaningful unsafe to check
+rust_miri_test(
+     name = "app_miri",
+     target = ":app",
+)

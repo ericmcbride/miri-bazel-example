@@ -1,0 +1,20 @@
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
+load("//miri:defs.bzl", "rust_miri_test")
+
+rust_library(
+    name = "utils",
+    srcs = ["src/lib.rs"],
+    edition = "2021",
+    visibility = ["//visibility:public"],
+    deps = ["//crates/core"],
+)
+
+rust_test(
+    name = "utils_test",
+    crate = ":utils",
+)
+
+rust_miri_test(
+    name = "utils_miri_tests",
+    target = ":utils_test",
+)
